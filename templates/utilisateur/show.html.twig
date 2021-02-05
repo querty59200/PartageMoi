@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil{% endblock %}
+
+{% block body %}
+    <h1>Mon profil</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Prenom</th>
+            <td>{{ utilisateur.prenom }}</td>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <td>{{ utilisateur.nom }}</td>
+        </tr>
+        <tr>
+            <th>Téléphone</th>
+            <td>{{ utilisateur.telephone }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ utilisateur.email }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('utilisateur_edit', {'id': utilisateur.id}) }}">Editer</a>
+    <a class="btn btn-primary" href="{{ path('home') }}">Retourner à l'accueil</a>
+
+
+{% endblock %}

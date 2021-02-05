@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle utilisateur{% endblock %}
+
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class = "d-flex justify-content-between">
+        <h1>Créer un nouvel utilisateur</h1>
+        <a class="btn btn-primary" href="{{ path('home') }}">Retourner à l'accueil</a>
+    </div>
+
+    {{ form_start(form) }}
+
+    {{ form_row(form.prenom) }}
+    {{ form_row(form.nom) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.telephone) }}
+    {{ form_row(form.roles) }}
+
+    <button type="submit" class="btn btn-primary">S'enregistrer</button>
+    {{ form_end(form) }}
+
+{% endblock %}
