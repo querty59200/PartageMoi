@@ -12,7 +12,7 @@
                         <a href="{{ (path('app_who_are_we'))  }}" class="text-dark js-modal">Qui sommes-nous ?</a>
                     </li>
                     <li>
-                        <a href="#!" class="text-dark js-modal">Nous rejoindre</a>
+                        <a href="#!" class="text-dark js-modal_who">Nous rejoindre</a>
                     </li>
                 </ul>
             </div>
@@ -59,6 +59,6 @@
 </footer>
 
 {% block javascripts %}
-{{ include('script/script_modal_who_are_we.html.twig') }}
+    {{ encore_entry_script_tags('modal_who_are_we') }}
 {% endblock %}
 
