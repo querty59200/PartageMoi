@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer la location{% endblock %}
+
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {{ form_start(form) }}
+
+    <div class="d-flex justify-content-around">
+        <h1>Editer la location</h1>
+
+    </div>
+
+        {{ form_row(form.utilisateur) }}
+        {{ form_row(form.produit) }}
+        {{ form_row(form.dateDebut) }}
+        {{ form_row(form.dateFin) }}
+        {{ form_row(form.montantLocation) }}
+
+        {{ form_row(form.valider) }}
+
+    {{ form_end(form) }}
+
+    <a class="btn btn-primary" href="{{ path('locations') }}">Retour à la liste</a>
+
+{% endblock %}

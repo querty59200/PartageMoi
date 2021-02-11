@@ -1,0 +1,27 @@
+{{ form_start(form) }}
+    {{ form_row(form.nom) }}
+    {{ form_row(form.marque) }}
+    {{ form_row(form.categorie) }}
+    {{ form_row(form.contenu) }}
+    {{ form_row(form.images) }}
+
+    {# Si la route est "annonces_edit on affiche les images #}
+	{% if app.request.attributes.get('_route') == 'produit_edit' %}
+        <h2>Images</h2>
+        <div class="d-flex justify-content-around">
+        {% for image in produit.images %}
+                <div>
+                    <img src="{{ asset('/uploads/'~image.nom) }}" alt="" width="75">
+
+                    {# On ajoute un lien permettant de supprimer une image (sera géré en Ajax) #}
+                    <a href="{{ path('image_delete', {'id': image.id})}}" data-delete data-token="{{ csrf_token('delete' ~ image.id )}}">Supprimer</a>
+                </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+    <br>
+
+    {{ form_row(form.publier) }}
+
+{{ form_end(form) }}

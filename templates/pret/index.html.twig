@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes prêts{% endblock %}
+
+{% block body %}
+    <h1>Mes prêts</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Images</th>
+                <th>Catégorie</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Montant de la Rente</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pret in prets %}
+            <tr>
+                <td>{{ pret.produit.nom }}</td>
+                <td><div class="d-flex">
+                        {% for image in pret.produit.images %}
+                            <div>
+                                <img src="{{ asset('/uploads/'~image.nom) }}" alt="" width="50">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </td>
+                <td>{{ pret.produit.categorie.nom }}</td>
+                <td>{{ pret.dateDebut ? pret.dateDebut|date('Y-m-d') : '' }}</td>
+                <td>{{ pret.dateFin ? pret.dateFin|date('Y-m-d') : '' }}</td>
+                <td>{{ pret.montantRente }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('pret_edit', {'id': pret.id}) }}">Editer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun enregistrement</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('pret_new') }}">Créer un nouveau prêt</a>
+{% endblock %}

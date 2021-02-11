@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit{% endblock %}
+
+{% block body %}
+    <h1>Produit</h1>
+
+    <div class="d-flex justify-content-around">
+        {% for image in produit.images %}
+            <div>
+                <img src="{{ asset('/uploads/'~image.nom) }}" alt="" width="75">
+            </div>
+        {% endfor %}
+    </div>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Nom</th>
+                <td>{{ produit.nom }}</td>
+            </tr>
+            <tr>
+                <th>Marque</th>
+                <td>{{ produit.marque }}</td>
+            </tr>
+            <tr>
+                <th>Contenu</th>
+                <td>{{ produit.contenu | raw }}</td>
+            </tr>
+            <tr>
+                <th>Disponibilite</th>
+                <td>{{ produit.disponibilite ? 'En stock' : 'Loué' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex">
+        <a class="btn btn-primary" href="{{ path('produit_show', {'id': produit.id}) }}">show</a>
+        <a class="btn btn-primary" href="{{ path('produit_edit', {'id': produit.id}) }}">edit</a>
+        {{ include('produit/_delete_form.html.twig') }}
+    </div>
+
+{% endblock %}

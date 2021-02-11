@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class = "d-flex justify-content-between">
+    <h1>Editer mon profil</h1>
+    <a class="btn btn-primary" href="{{ path('home') }}">Retourner à l'accueil</a>
+    </div>
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.nom) }}
+        {{ form_row(form.prenom) }}
+        {{ form_row(form.telephone) }}
+        {{ form_row(form.email) }}
+
+    <button class="btn btn-primary">{{ button_label|default('Sauvegarder') }}</button>
+    <a class="btn btn-primary js-modal" href="{{ path('password_change', {'id' : utilisateur.id}) }}">Changer votre password</a>
+
+    {{ form_end(form) }}
+
+    <div id="myModal"></div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('modal_change_password') }}
+{% endblock %}

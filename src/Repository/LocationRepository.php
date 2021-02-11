@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Repository;
+
+use App\Entity\Location;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @method Location|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Location|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Location[]    findAll()
+ * @method Location[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class LocationRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Location::class);
+    }
+
+    public function findMontantTotalLocationsForLastWeek()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT SUM(location.montant_location) as "montant" FROM location
+                WHERE location.date_debut > DATE(NOW()) - INTERVAL 7 DAY';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+    }
+
+    public function findLocationsByCategorieByDateDebutForLastWeek()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT location.date_debut as dateDebut, categorie.nom, SUM(location.montant_location) as montant FROM location
+                JOIN produit ON produit.id = location.produit_id
+                JOIN categorie ON categorie.id = produit.categorie_id
+                WHERE location.date_debut > DATE(NOW()) - INTERVAL 7 DAY
+                GROUP BY location.date_debut, categorie.nom
+                ORDER BY location.date_debut DESC
+                ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+    }
+
+    // /**
+    //  * @return Location[] Returns an array of Location objects
+    //  */
+    /*
+    public function findByExampleField($value)
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('l.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    */
+
+    /*
+    public function findOneBySomeField($value): ?Location
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    */
+}

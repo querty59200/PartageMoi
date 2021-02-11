@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resultats{% endblock %}
+
+{% block body %}
+
+    <div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="d-flex">
+                    <div class="row">
+                        <div class="col-md-8">
+                            {% for image in produit.images %}
+                                <div>
+                                    <img src="{{ asset('/uploads/'~image.nom) }}" alt="" width="50">
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            <h5>{{ produit.nom | upper }}</h5>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-6">
+                <h5>{{ produit.categorie.nom | upper }}</h5>
+                <p>{{ produit.contenu | u.truncate(180, ' (...)')}}</p>
+                <h5>Date d'entrée {{ produit.createdAt | format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}</h5>
+            </div>
+            <div class="col-md-6">{{ render_chart(chart)}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">KPI</th>
+                            <th scope="col">2019</th>
+                            <th scope="col">2020</th>
+                            <th scope="col">Variation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">Satisfaction</th>
+                            <td>95 %</td>
+                            <td>86 %</td>
+                            <td>9 %</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Journées de location</th>
+                            <td>21 €</td>
+                            <td>18 €</td>
+                            <td>+ 3 €</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Encaissement</th>
+                            <td>210 €</td>
+                            <td>180 €</td>
+                            <td>+ 30 €</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Décaissement</th>
+                            <td>55 €</td>
+                            <td>68 €</td>
+                            <td>- 13 €</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            <div class="col-md-6">{{ render_chart(chart)}}</div>
+        </div>
+    </div>
+
+    <a href="{{ path('produits') }}">back to list</a>
+
+{% endblock %}

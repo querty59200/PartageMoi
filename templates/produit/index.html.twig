@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block head %}
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+              integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+              crossorigin=""/>
+        <link rel="stylesheet" href="produit.css">
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-8 ">
+            <div class="card-group">
+                {% for produit in produits %}
+                    <div class="col-md-4">
+                        <h3 class="card-header">{{ produit.nom }} <br> (à partir de 4.99 € / jour</h3>
+                        <img class="card-img-top" src="https://static.fnac-static.com/multimedia/Images/FR/MDM/50/99/c2/12753232/1540-1/tsp20201026171122/Raclette-Tefal-8-coupelles-RE320012-1050-W-Noir.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">{{ produit.contenu }}</p>
+                        </div>
+                        <div class="card-body">
+                            <a href="#" class="btn btn-primary-success">Détails</a>
+                            <a href="#">Ajouter</a>
+                            <br>
+                            <a class="js-like card-link" href="{{ path('produit_reaction', {'id' : produit.id}) }}">
+{#                                {% if app.user and produit.isLikedByUser(app.user) %}#}
+                                    <i class="fas fa-thumbs-up"></i>
+{#                                {% else %}#}
+{#                                    <i class="far fa-thumbs-up"></i>#}
+{#                                {% endif %}#}
+{#                                <span class="js-likes">{{ produits.reactions | length }} J'aime </span>#}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div style="height: 540px;" id="mapid"></div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var mymap = L.map('mapid').setView([45, 4], 13);
+
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1
+        }).addTo(mymap);
+
+{#        {% for depot in depots %}#}
+
+{#        L.marker([{{depot.latitude}},{{depot.longitude}}]).addTo(mymap)#}
+{#            .bindPopup("<b>{{depot.nom | upper}}</b>"#}
+{#                + "<br>{{depot.adresse}} {{depot.codePostal}} {{depot.ville | upper}}<br>" +#}
+{#                "{{depot.telephone}}").openPopup();#}
+
+{#        {% endfor %}#}
+
+        var popup = L.popup();
+
+        function onMapClick(e) {
+            popup
+                .setLatLng(e.latlng)
+                .setContent("Position : " + e.latlng.toString())
+                .openOn(mymap);
+        }
+
+        mymap.on('click', onMapClick);
+    </script>
+{% endblock %}

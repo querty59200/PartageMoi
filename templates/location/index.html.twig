@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Locations{% endblock %}
+
+{% block body %}
+    <h1>Mes locations</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Prix moyen</th>
+                <th>Montant de la location</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th><i class="fas fa-thumbs-up"></i></th>
+                <th><i class="fas fa-thumbs-down"></i></th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for location in locations %}
+            <tr>
+                <td>{{ location.produit.nom }}</td>
+                <td>{{ 'a' }}</td>
+                <td>
+                    {{ location.montantLocation }}
+                </td>
+                <td>{{ location.dateDebut ? location.dateDebut|date('Y-m-d') : '' }}</td>
+                <td>{{ location.dateFin ? location.dateFin|date('Y-m-d') : '' }}</td>
+                <td>
+                    {% if location.reaction  != null %}
+                        {{ location.reaction.type ? 'X' : '' }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if location.reaction  != null %}
+                        {{ location.reaction.type ? '' : 'X' }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('location_edit', {'id': location.id}) }}">Editer</a>
+                    <a class="btn btn-primary" href="{{ path('location_cloture', {'id': location.id}) }}">Cloturer</a>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('location_new') }}">Créer une nouvelle location</a>
+{% endblock %}

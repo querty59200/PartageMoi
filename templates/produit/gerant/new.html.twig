@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Produit{% endblock %}
+
+{% block body %}
+    <h1>Créer un nouveau produit</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.nom) }}
+    {{ form_row(form.marque) }}
+    {{ form_row(form.categorie) }}
+    {{ form_row(form.contenu) }}
+    {{ form_row(form.images) }}
+
+    <div id="file-upload-filename"></div>
+
+    {# Si la route est "annonces_edit on affiche les images #}
+    {% if app.request.attributes.get('_route') == 'produit_edit' %}
+        <h2>Images</h2>
+        <div class="d-flex justify-content-around">
+            {% for image in produit.images %}
+                <div>
+                    <img src="{{ asset('/uploads/'~image.nom) }}" alt="" width="75">
+
+                    {# On ajoute un lien permettant de supprimer une image (sera géré en Ajax) #}
+                    <a href="{{ path('image_delete', {'id': image.id})}}" data-delete data-token="{{ csrf_token('delete' ~ image.id )}}">Supprimer</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <br>
+
+    {{ form_row(form.publier) }}
+
+    {{ form_end(form) }}
+
+    <a class="btn btn-primary" href="{{ path('produits') }}">back to list</a>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        let input = document.getElementById( 'produit_form_images' );
+        let output = document.getElementById( 'file-upload-filename' );
+        let fileList = [];
+
+        input.addEventListener( 'change', showFileName );
+
+        function showFileName( event ) {
+
+        // the change event gives us the input it occurred in
+            let input = event.target;
+
+        // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+            for (let i = 0; i < input.files.length; ++i) {
+                fileList.push(input.files.item(i).name);
+            }
+            for (let i = 0; i < fileList.length; ++i) {
+                output.innerHTML +=  fileList[i];
+            }
+
+            let delete_input = function (e) {
+                console.log(e);
+                console.log(fileList);
+                }
+
+
+            document.querySelectorAll('.js-delete').forEach(
+                function (link) {
+                    link.addEventListener('click', delete_input);
+                })
+        }
+    </script>
+{% endblock %}

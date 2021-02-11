@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle location{% endblock %}
+
+{% block body %}
+
+    <h1>Créer une nouvelle location</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.produit) }}
+        {{ form_row(form.utilisateur) }}
+        {{ form_row(form.dateDebut) }}
+        {{ form_row(form.dateFin) }}
+        {{ form_row(form.montantLocation) }}
+        {{ form_row(form.valider) }}
+
+    {{ form_end(form) }}
+
+    <a class="btn btn-primary" href="{{ path('locations') }}">Retour aux locations</a>
+{% endblock %}
+

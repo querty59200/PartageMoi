@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resultats Quotidiens{% endblock %}
+
+{% block body %}
+    <h1>Balance commerciale</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Catégorie</th>
+            <th>Rapport</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for pret_categorie_7_jours_glissants in prets_categorie_7_jours_glissants %}
+            <tr>
+                <td>{{ pret_categorie_7_jours_glissants.dateDebut | format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY") }}</td>
+                <td>{{ pret_categorie_7_jours_glissants.nom }}</td>
+                <td>{{ pret_categorie_7_jours_glissants.montant | format_currency('EUR') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td>Total</td>
+            <td></td>
+            <td>{{ montant_total_prets.montant |format_currency('EUR') }}</td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <h1>Prets quotidiens sur 7 jours glissants</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Catégorie</th>
+                <th>Date d'entrée en stock</th>
+                <th>Montant</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pret_categorie_7_jours_glissants in prets_categorie_7_jours_glissants %}
+                <tr>
+                    <td>{{ pret_categorie_7_jours_glissants.nom }}</td>
+                    <td>{{ pret_categorie_7_jours_glissants.dateDebut | date('Y-m-d') }}</td>
+                    <td>{{ pret_categorie_7_jours_glissants.montant |format_currency('EUR') }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td>Total</td>
+            <td></td>
+            <td>{{ montant_total_prets.montant |format_currency('EUR') }}</td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <h1>Locations quotidiens sur 7 jours glissants</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Catégorie</th>
+            <th>Date de location</th>
+            <th>Montant</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for location_categorie_7_jours_glissants in locations_categorie_7_jours_glissants %}
+            <tr>
+                <td>{{ location_categorie_7_jours_glissants.nom }}</td>
+                <td>{{ location_categorie_7_jours_glissants.dateDebut | date('Y-m-d') }}</td>
+                <td>{{ location_categorie_7_jours_glissants.montant |format_currency('EUR') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td>Total</td>
+            <td></td>
+            <td>{{ montant_total_locations.montant |format_currency('EUR') }}</td>
+        </tr>
+        </tfoot>
+    </table>
+{% endblock %}

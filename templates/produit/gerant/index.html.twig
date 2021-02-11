@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Produit{% endblock %}
+
+{% block body %}
+    <h1>Mes Produits</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Marque</th>
+                <th>Contenu</th>
+                <th>Catégorie</th>
+                <th>Miniatures</th>
+                <th>Disponibilite</th>
+                <th>Rente hebdomadaire</th>
+                <th>Location quotidienne</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr>
+                <td>{{ produit.nom }}</td>
+                <td>{{ produit.marque }}</td>
+                <td>{{ produit.contenu | raw}}</td>
+                <td>{{ produit.categorie.nom }}</td>
+                <td><div class="d-flex">
+                        {% for image in produit.images %}
+                            <div>
+                                <img src="{{ asset('/uploads/'~image.nom) }}" alt="" width="50">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </td>
+                <td>{{ produit.disponibilite ? 'En Stock' : 'Loué' }}</td>
+                <td>{{ 2 | format_currency('EUR') }}</td>
+                <td>{{ 2 | format_currency('EUR') }}</td>
+                <td>
+                    <div class="d-flex justify-content-around">
+                        <a class="btn btn-primary" href="{{ path('resultats_produit', {'id': produit.id}) }}">Résultats</a>
+                        <a class="btn btn-primary" href="{{ path('produit_edit', {'id': produit.id}) }}">Editer</a>
+                        {{ include('produit/_delete_form.html.twig') }}
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('produit_new') }}">Créer un nouveau produit</a>
+{% endblock %}
